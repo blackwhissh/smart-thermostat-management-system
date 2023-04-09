@@ -2,7 +2,9 @@ package com.blackwhissh.smartthermostat.service;
 
 import com.blackwhissh.smartthermostat.model.Thermostat;
 import com.blackwhissh.smartthermostat.repository.ThermostatRepository;
+import com.blackwhissh.smartthermostat.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +13,14 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ThermostatService {
 
+    @Autowired
     private final ThermostatRepository thermostatRepository;
 
     @Autowired
-    public ThermostatService(ThermostatRepository thermostatRepository) {
-        this.thermostatRepository = thermostatRepository;
-    }
+    private final UserRepository userRepository;
 
     public List<Thermostat> getThermostats() {
         return thermostatRepository.findAll();
@@ -36,6 +38,8 @@ public class ThermostatService {
     public void addNewThermostat(Thermostat thermostat) {
         thermostatRepository.save(thermostat);
     }
+
+
 
     public void deleteThermostat(Long id) {
         boolean exists = thermostatRepository.existsById(id);
@@ -58,4 +62,15 @@ public class ThermostatService {
         thermostat.setThreshold(threshold);
         thermostatRepository.save(thermostat);
     }
+
+//    public void assignUser(Long thermostatId, Long userId) {
+//        Thermostat thermostat = thermostatRepository.findById(thermostatId)
+//                .orElseThrow(() -> new IllegalStateException("Thermostat with given id " + thermostatId + " does not exists"));
+//
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new IllegalStateException("User with given id " + userId + " does not exists"));
+//
+//        thermostat.setUser(user);
+//        thermostatRepository.save(thermostat);
+//    }
 }

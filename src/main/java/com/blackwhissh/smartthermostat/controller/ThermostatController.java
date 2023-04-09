@@ -3,6 +3,9 @@ package com.blackwhissh.smartthermostat.controller;
 import com.blackwhissh.smartthermostat.model.Thermostat;
 import com.blackwhissh.smartthermostat.service.ThermostatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.Optional;
 public class ThermostatController {
 
 
+    @Autowired
     private final ThermostatService thermostatService;
 
     @Autowired
@@ -35,6 +39,7 @@ public class ThermostatController {
         thermostatService.addNewThermostat(thermostat);
     }
 
+
     @DeleteMapping(path = "{thermostatId}")
     public void deleteThermostat(@PathVariable("thermostatId") Long id) throws NullPointerException{
         thermostatService.deleteThermostat(id);
@@ -46,6 +51,13 @@ public class ThermostatController {
                                  @RequestParam(required = false) Double threshold){
         thermostatService.updateThermostat(id, deviceName, threshold);
     }
+
+
+
+//    @PutMapping(path = "/{thermostatId}/user/{userId}")
+//    public void assignUser(@PathVariable("thermostatId") Long thermostatId, @PathVariable("userId") Long userId){
+//        thermostatService.assignUser(thermostatId, userId);
+//    }
 
 
 }

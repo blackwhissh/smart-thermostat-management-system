@@ -1,9 +1,15 @@
 package com.blackwhissh.smartthermostat.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.Cascade;
+
+import java.util.List;
 
 @Entity
-@Table
+@Table(name = "users")
+@ToString
 public class User {
     @Id
     @SequenceGenerator(
@@ -15,10 +21,16 @@ public class User {
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
-    private Long id;
 
+    @Column(name = "user_id")
+    private Long id;
+    @Column(name = "user_username", unique = true)
     private String username;
+
+    @Column(name = "user_password")
     private String password;
+
+
 
     public User(Long id, String username, String password) {
         this.id = id;

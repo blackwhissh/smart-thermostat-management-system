@@ -2,12 +2,17 @@ package com.blackwhissh.smartthermostat.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.text.DecimalFormat;
 import java.util.Random;
 
 @Entity
-@Table
+@Table(name = "thermostats")
+@AllArgsConstructor
+@Getter
+@Setter
 public class Thermostat {
     @Id
     @SequenceGenerator(
@@ -19,12 +24,31 @@ public class Thermostat {
             strategy = GenerationType.SEQUENCE,
             generator = "thermostat_sequence"
     )
+    @Column(name = "thermostat_id")
     private Long id;
+
+    @Column(name = "thermostat_name")
     private String deviceName;
+
+    @Column(name = "thermostat_temperature")
     private Double temperature;
+
+    @Column(name = "thermostat_threshold")
     private Double threshold;
+
+    @Column(name = "thermostat_condition")
     private String condition;
 
+    @Column(name = "user_id")
+    private Long userId;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public Thermostat() {
         DecimalFormat df = new DecimalFormat("#.##");
@@ -44,7 +68,6 @@ public class Thermostat {
 
         updateCondition();
     }
-
     public Long getId() {
         return id;
     }
