@@ -3,9 +3,6 @@ package com.blackwhissh.smartthermostat.controller;
 import com.blackwhissh.smartthermostat.model.Thermostat;
 import com.blackwhissh.smartthermostat.service.ThermostatService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +12,6 @@ import java.util.Optional;
 @RequestMapping(path = "api/v1/thermostat")
 public class ThermostatController {
 
-
     @Autowired
     private final ThermostatService thermostatService;
 
@@ -24,7 +20,7 @@ public class ThermostatController {
         this.thermostatService = thermostatService;
     }
 
-    @GetMapping
+    @GetMapping()
     public List<Thermostat> getThermostats(){
         return thermostatService.getThermostats();
     }
@@ -52,12 +48,6 @@ public class ThermostatController {
         thermostatService.updateThermostat(id, deviceName, threshold);
     }
 
-
-
-//    @PutMapping(path = "/{thermostatId}/user/{userId}")
-//    public void assignUser(@PathVariable("thermostatId") Long thermostatId, @PathVariable("userId") Long userId){
-//        thermostatService.assignUser(thermostatId, userId);
-//    }
 
 
 }

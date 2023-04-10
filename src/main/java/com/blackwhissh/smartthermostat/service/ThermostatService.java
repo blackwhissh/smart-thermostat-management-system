@@ -6,6 +6,7 @@ import com.blackwhissh.smartthermostat.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ThermostatService {
+
 
     @Autowired
     private final ThermostatRepository thermostatRepository;
@@ -35,11 +37,18 @@ public class ThermostatService {
         }
     }
 
+
     public void addNewThermostat(Thermostat thermostat) {
-        thermostatRepository.save(thermostat);
+
+        boolean exists = userRepository.existsById(thermostat.getUserId());
+
+        if(exists){
+            throw new IllegalStateException("User with given ID: " + thermostat.getUserId() + " Already exists");
+        }else {
+            thermostatRepository.save(thermostat);
+        }
+
     }
-
-
 
     public void deleteThermostat(Long id) {
         boolean exists = thermostatRepository.existsById(id);
