@@ -4,6 +4,7 @@
 I have developed Smart thermostat management system, where user can add,view,update and delete thermostats under his control (by userId).
 I have implemented in the Thermostat constructor random number generator in range of 5-35 to generate and throw random value of temperature to the server.
 Added updateCondition() method - if temperature exceeds threshold value, device will be marked as CRITICAL, otherwise NORMAL.
+Added PasswordEncoder with BCryptPasswordEncoder.
 
 
 # Dependencies
