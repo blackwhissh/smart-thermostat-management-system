@@ -40,13 +40,8 @@ public class ThermostatService {
 
     public void addNewThermostat(Thermostat thermostat) {
 
-        boolean exists = userRepository.existsById(thermostat.getId());
 
-        if(exists){
-            throw new IllegalStateException("Thermostat with given ID: " + thermostat.getId() + " Already exists");
-        }else {
-            thermostatRepository.save(thermostat);
-        }
+        thermostatRepository.save(thermostat);
 
     }
 
