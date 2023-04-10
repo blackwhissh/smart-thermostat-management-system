@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface ThermostatRepository extends JpaRepository<Thermostat, Long> {
 
+    List<Thermostat> findByUserId(Integer userId);
+
+    boolean existsByUserId(Integer userId);
 }

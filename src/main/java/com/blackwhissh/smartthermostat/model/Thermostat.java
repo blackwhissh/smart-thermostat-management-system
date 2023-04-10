@@ -40,15 +40,9 @@ public class Thermostat {
     private String condition;
 
     @Column(name = "user_id")
-    private Long userId;
+    private Integer userId;
 
-    public Long getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public Thermostat() {
         DecimalFormat df = new DecimalFormat("#.##");
