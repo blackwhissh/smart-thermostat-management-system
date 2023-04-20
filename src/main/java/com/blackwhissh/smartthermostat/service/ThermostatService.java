@@ -1,11 +1,14 @@
 package com.blackwhissh.smartthermostat.service;
 
+import com.blackwhissh.smartthermostat.exceptions.ThermostatNotFoundException;
 import com.blackwhissh.smartthermostat.model.Thermostat;
 import com.blackwhissh.smartthermostat.repository.ThermostatRepository;
 import com.blackwhissh.smartthermostat.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,11 +34,11 @@ public class ThermostatService {
 
         boolean exists = thermostatRepository.existsById(id);
         if(!exists){
-            throw new IllegalStateException("Thermostat with given id " + id + " does not exists");
+            throw new ThermostatNotFoundException();
         }else{
             Optional<Thermostat> thermostat = thermostatRepository.findById(id);
             if(thermostat.get().getUserId() != userId){
-                throw new IllegalStateException("Thermostat with id " + id + " with given user id " + userId + " does not exists");
+                throw new ThermostatNotFoundException();
             }else {
                 return thermostatRepository.findById(id);
             }
@@ -43,34 +46,36 @@ public class ThermostatService {
     }
 
 
-    public void addNewThermostat(Thermostat thermostat) {
-
+    public ResponseEntity<String> addNewThermostat(Thermostat thermostat) {
 
         thermostatRepository.save(thermostat);
 
+        return new ResponseEntity<>("Thermostat added successfully", HttpStatus.CREATED);
+
     }
 
-    public void deleteThermostat(Long id, Integer userId) {
+    public ResponseEntity<String> deleteThermostat(Long id, Integer userId) {
         boolean exists = thermostatRepository.existsById(id);
         if (!exists) {
-            throw new IllegalStateException("Thermostat with given id " + id + " does not exists");
+            throw new ThermostatNotFoundException();
         } else {
             Optional<Thermostat> thermostat = thermostatRepository.findById(id);
             if (thermostat.get().getUserId() != userId) {
-                throw new IllegalStateException("Thermostat with id " + id + " with given user id " + userId + " does not exists");
+                throw new ThermostatNotFoundException();
             } else {
                 thermostatRepository.deleteById(id);
             }
         }
+        return new ResponseEntity<>("Thermostat deleted successfully", HttpStatus.OK);
     }
 
     @Transactional
-    public void updateThermostat(Long id, String deviceName, Double threshold, Integer userId) {
+    public ResponseEntity<String> updateThermostat(Long id, String deviceName, Double threshold, Integer userId) {
         Thermostat thermostat = thermostatRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Thermostat with given id " + id + " does not exists"));
+                .orElseThrow(ThermostatNotFoundException::new);
 
         if(thermostat.getUserId() != userId){
-            throw new IllegalStateException("Thermostat with given user id " + userId + " does not exists");
+            throw new ThermostatNotFoundException();
         }
 
         if(deviceName != null && deviceName.length() > 0  && !Objects.equals(thermostat.getDeviceName() , deviceName)){
@@ -79,6 +84,7 @@ public class ThermostatService {
         }
         thermostat.setThreshold(threshold);
         thermostatRepository.save(thermostat);
+        return new ResponseEntity<>("Thermostat updated successfully", HttpStatus.OK);
     }
 
 }
